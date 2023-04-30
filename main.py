@@ -15,7 +15,7 @@ pygame.display.set_caption("EEPROM viewer")
 Rect = pygame.Rect
 # pin maps
 
-class Pin:
+class outPin:
     def __init__(self, rect, state, type, gpioobject):
         self.rect = rect
         self.state = state
@@ -23,14 +23,19 @@ class Pin:
         self.gpioobject = gpioobject
 
 outpins = [
-    Pin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(21)),
-    Pin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(20)),
-    Pin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(26)),
-    Pin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(16)),
-    Pin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(19)),
-    Pin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(13)),
-    Pin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(12)),
-    Pin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(6)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(21)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(20)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(26)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(16)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(19)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(13)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(12)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(6)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(5)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(7)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(8)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(11)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(25))
     ]
 """
 ADDRESS = [
