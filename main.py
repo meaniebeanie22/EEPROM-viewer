@@ -1,4 +1,10 @@
-# from gpiozero import *
+# need to add:
+# rects for each pin box
+# method of detecting which pin has been clicked
+# doing something about it
+# map rects to a dictionary
+
+import gpiozero # pi GPIO
 import pygame
 
 # pygame setup
