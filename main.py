@@ -21,8 +21,49 @@ class outPin:
         self.state = state
         self.type = type
         self.gpioobject = gpioobject
+        return
+    
+    def onClick(self):
+        self.state = not(self.state)
+        if self.state:
+            screen.blit(GREEN, self.rect)
+            self.gpioobject.on() 
+        else:
+            screen.blit(RED, self.rect)
+            self.gpioobject.off()
+        return
+        
 
-outpins = [
+class IOPin:
+    def __init__(self, rect, state, pin):
+        self.rect = rect
+        self.state = state
+        self.pin = pin
+        self.gpioobject = gpiozero.OutputDevice(self.pin)
+        return
+    
+    def output(self):
+        self.OUTPUT = True
+        self.gpioobject.close()
+        self.gpioobject = gpiozero.OutputDevice(self.pin)
+        return
+    
+    def input(self):
+        self.OUTPUT = False
+        self.gpioobject.close()
+        self.gpioobject = gpiozero.InputDevice(self.pin)
+        return
+    
+    def onClick(self):
+        if self.OUTPUT:
+            pass
+        else:
+            return
+        
+
+
+
+pins = [
     outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(21)),
     outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(20)),
     outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(26)),
@@ -35,30 +76,21 @@ outpins = [
     outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(7)),
     outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(8)),
     outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(11)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(25))
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(25)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(9)),
+    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(10)),
+    outPin(Rect(), False, "WE", gpiozero.OutputDevice(14, False, False)),
+    outPin(Rect(), False, "OE", gpiozero.OutputDevice(3, False, False)),
+    IOPin(Rect(), False, 24),
+    IOPin(Rect(), False, 23),
+    IOPin(Rect(), False, 22),
+    IOPin(Rect(), False, 27),
+    IOPin(Rect(), False, 17),
+    IOPin(Rect(), False, 18),
+    IOPin(Rect(), False, 15),
+    IOPin(Rect(), False, 4)
     ]
-"""
-ADDRESS = [
-           gpiozero.OutputDevice(21), 
-           gpiozero.OutputDevice(20), 
-           gpiozero.OutputDevice(26), 
-           gpiozero.OutputDevice(16), 
-           gpiozero.OutputDevice(19), 
-           gpiozero.OutputDevice(13), 
-           gpiozero.OutputDevice(12), 
-           gpiozero.OutputDevice(6), 
-           gpiozero.OutputDevice(5), 
-           gpiozero.OutputDevice(7), 
-           gpiozero.OutputDevice(8), 
-           gpiozero.OutputDevice(11), 
-           gpiozero.OutputDevice(25), 
-           gpiozero.OutputDevice(9), 
-           gpiozero.OutputDevice(10)
-           ]
-IO = [24, 23, 22, 27, 17, 18, 15, 4]
-WE = gpiozero.OutputDevice(14, False, False)
-OE = gpiozero.OutputDevice(3, False, False)
-"""
+
 # boxes are 40 wide by 15 tall
 # eeprom image
 GREEN = pygame.Surface((40,15)).fill(green)
@@ -78,6 +110,9 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN: 
             point = (event.pos[0], event.pos[1])
             print(f'click at x: {event.pos[0]}, y: {event.pos[1]}')
+            for pin in pins:
+                if pin.rect.collidepoint(point):
+                    pin.onClick()
 
 
     
