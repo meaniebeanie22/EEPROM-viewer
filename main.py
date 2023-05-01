@@ -1,8 +1,6 @@
 # need to add:
-# rects for each pin box
-# method of detecting which pin has been clicked
-# doing something about it
-# pygame setups
+# rects coords for each pin box
+# t e s t i n g
 black = 0, 0, 0
 red = 255, 0, 0
 green = 0, 255, 0
@@ -21,16 +19,25 @@ class outPin:
         self.state = state
         self.type = type
         self.gpioobject = gpioobject
+        if self.state:
+            self.gpioobject.on() 
+        else:
+            self.gpioobject.off()
         return
     
     def onClick(self):
         self.state = not(self.state)
         if self.state:
-            screen.blit(GREEN, self.rect)
             self.gpioobject.on() 
         else:
-            screen.blit(RED, self.rect)
             self.gpioobject.off()
+        return
+    
+    def renderState(self):
+        if self.state:
+            screen.blit(GREEN, self.rect)
+        else:
+            screen.blit(RED, self.rect)
         return
         
 
@@ -40,6 +47,13 @@ class IOPin:
         self.state = state
         self.pin = pin
         self.gpioobject = gpiozero.OutputDevice(self.pin)
+        return
+
+    def renderState(self):
+        if self.state:
+            screen.blit(GREEN, self.rect)
+        else:
+            screen.blit(RED, self.rect)
         return
     
     def output(self):
@@ -56,9 +70,22 @@ class IOPin:
     
     def onClick(self):
         if self.OUTPUT:
-            pass
+            self.state = not(self.state)
+            if self.state:
+                self.gpioobject.on() 
+            else:
+                self.gpioobject.off()
+            return
         else:
             return
+    
+    def setInputState(self):
+        if self.OUTPUT:
+            return
+        else:
+            self.state = self.gpioobject.value()
+
+
         
 
 
@@ -105,6 +132,7 @@ EEPROMrect = pygame.Rect(50,0,500,600)
 while True:
     screen.fill(black)
     screen.blit(EEPROM, EEPROMrect)
+    #go through the event queue and deal with clicks
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN: 
@@ -113,7 +141,11 @@ while True:
             for pin in pins:
                 if pin.rect.collidepoint(point):
                     pin.onClick()
-
+    #check inputs and render
+    for pin in pins:
+        if type(pin) == IOPin:
+            pin.setInputState()
+        pin.renderState()
 
     
     
