@@ -8,6 +8,7 @@ green = 0, 255, 0
 blue = 0, 0, 255
 import gpiozero # pi GPIO
 import pygame, sys
+from time import sleep
 pygame.init()
 screen = pygame.display.set_mode((600, 600))
 pygame.display.set_caption("EEPROM viewer")
@@ -86,11 +87,6 @@ class IOPin:
         else:
             self.state = self.gpioobject.value()
 
-
-        
-
-
-
 pins = [
     outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(21)),
     outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(20)),
@@ -133,7 +129,7 @@ EEPROMrect = pygame.Rect(50,0,500,600)
 while True:
     screen.fill(black)
     screen.blit(EEPROM, EEPROMrect)
-    #go through the event queue and deal with clicks
+    # go through the event queue and deal with clicks
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
         if event.type == pygame.MOUSEBUTTONDOWN: 
@@ -142,7 +138,8 @@ while True:
             for pin in pins:
                 if pin.rect.collidepoint(point):
                     pin.onClick()
-    #check inputs and render
+    sleep(10)
+    # check inputs and render
     for pin in pins:
         if type(pin) == IOPin:
             pin.setInputState()
