@@ -1,5 +1,6 @@
 # need to add:
 # rects coords for each pin box
+# a way to change between an IO being in or out (little I or O next to each IO pin - click on it to change DD)
 # t e s t i n g
 black = 0, 0, 0
 red = 255, 0, 0
