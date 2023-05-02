@@ -30,10 +30,7 @@ class outPin:
     
     def onClick(self):
         self.state = not(self.state)
-        if self.state:
-            self.gpioobject.on() 
-        else:
-            self.gpioobject.off()
+        self.gpioobject.toggle()
         return
     
     def renderState(self):
@@ -74,10 +71,7 @@ class IOPin:
     def onClick(self):
         if self.OUTPUT:
             self.state = not(self.state)
-            if self.state:
-                self.gpioobject.on() 
-            else:
-                self.gpioobject.off()
+            self.gpioobject.toggle()
             return
         else:
             return
@@ -86,7 +80,8 @@ class IOPin:
         if self.OUTPUT:
             return
         else:
-            self.state = self.gpioobject.value()
+            self.state = bool(self.gpioobject.value())
+            return
 
 pins = [
     outPin(pygame.Rect(0,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(21)),
@@ -133,6 +128,7 @@ while True:
     # go through the event queue and deal with clicks
     for event in pygame.event.get():
         if event.type == pygame.QUIT: sys.exit()
+        
         if event.type == pygame.MOUSEBUTTONDOWN: 
             point = (event.pos[0], event.pos[1])
             print(f'click at x: {event.pos[0]}, y: {event.pos[1]}')
@@ -146,7 +142,5 @@ while True:
             pin.setInputState()
         pin.renderState()
 
-    
-    
     pygame.display.flip()
 
