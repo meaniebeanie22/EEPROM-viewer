@@ -14,7 +14,6 @@ blue = 0, 0, 255
 pygame.init()
 screen = pygame.display.set_mode((600, 600))
 pygame.display.set_caption("EEPROM viewer")
-Rect = pygame.Rect
 # pin maps
 
 class outPin:
@@ -90,31 +89,31 @@ class IOPin:
             self.state = self.gpioobject.value()
 
 pins = [
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(21)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(20)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(26)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(16)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(19)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(13)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(12)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(6)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(5)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(7)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(8)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(11)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(25)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(9)),
-    outPin(Rect(), False, "ADDRESS", gpiozero.OutputDevice(10)),
-    outPin(Rect(), False, "WE", gpiozero.OutputDevice(14, False, False)),
-    outPin(Rect(), False, "OE", gpiozero.OutputDevice(3, False, False)),
-    IOPin(Rect(), False, 24),
-    IOPin(Rect(), False, 23),
-    IOPin(Rect(), False, 22),
-    IOPin(Rect(), False, 27),
-    IOPin(Rect(), False, 17),
-    IOPin(Rect(), False, 18),
-    IOPin(Rect(), False, 15),
-    IOPin(Rect(), False, 4)
+    outPin(pygame.Rect(0,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(21)),
+    outPin(pygame.Rect(10,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(20)),
+    outPin(pygame.Rect(20,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(26)),
+    outPin(pygame.Rect(30,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(16)),
+    outPin(pygame.Rect(40,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(19)),
+    outPin(pygame.Rect(50,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(13)),
+    outPin(pygame.Rect(60,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(12)),
+    outPin(pygame.Rect(70,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(6)),
+    outPin(pygame.Rect(80,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(5)),
+    outPin(pygame.Rect(90,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(7)),
+    outPin(pygame.Rect(100,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(8)),
+    outPin(pygame.Rect(110,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(11)),
+    outPin(pygame.Rect(120,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(25)),
+    outPin(pygame.Rect(130,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(9)),
+    outPin(pygame.Rect(140,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(10)),
+    outPin(pygame.Rect(150,0,10,10), False, "WE", gpiozero.OutputDevice(14, False, False)),
+    outPin(pygame.Rect(160,0,10,10), False, "OE", gpiozero.OutputDevice(3, False, False)),
+    IOPin(pygame.Rect(170,0,10,10), False, 24),
+    IOPin(pygame.Rect(180,0,10,10), False, 23),
+    IOPin(pygame.Rect(190,0,10,10), False, 22),
+    IOPin(pygame.Rect(200,0,10,10), False, 27),
+    IOPin(pygame.Rect(210,0,10,10), False, 17),
+    IOPin(pygame.Rect(220,0,10,10), False, 18),
+    IOPin(pygame.Rect(230,0,10,10), False, 15),
+    IOPin(pygame.Rect(240,0,10,10), False, 4)
     ]
 
 # boxes are 40 wide by 15 tall
