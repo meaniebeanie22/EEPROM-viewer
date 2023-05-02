@@ -2,13 +2,15 @@
 # rects coords for each pin box
 # a way to change between an IO being in or out (little I or O next to each IO pin - click on it to change DD)
 # t e s t i n g
+import gpiozero # pi GPIO
+import pygame, sys
+from time import sleep
+
 black = 0, 0, 0
 red = 255, 0, 0
 green = 0, 255, 0
 blue = 0, 0, 255
-import gpiozero # pi GPIO
-import pygame, sys
-from time import sleep
+
 pygame.init()
 screen = pygame.display.set_mode((600, 600))
 pygame.display.set_caption("EEPROM viewer")
