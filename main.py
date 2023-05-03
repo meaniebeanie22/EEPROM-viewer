@@ -15,6 +15,28 @@ pygame.init()
 screen = pygame.display.set_mode((600, 600))
 pygame.display.set_caption("EEPROM viewer")
 # pin maps
+class IOSwitch:
+    def __init__(self, rect, bound):
+        self.rect = rect
+        self.bound = bound
+        return
+    
+    def onClick(self):
+        if self.bound.OUTPUT:
+            self.bound.input()
+        else:
+            self.bound.output()
+        
+        return
+    
+    def renderState(self):
+        if self.bound.OUTPUT:
+            # render an O next to the right pin
+            pass
+        else:
+            # render an I next to the bound pin
+            pass
+        return
 
 class outPin:
     def __init__(self, rect, state, type, gpioobject):
@@ -47,6 +69,7 @@ class IOPin:
         self.state = state
         self.pin = pin
         self.gpioobject = gpiozero.OutputDevice(self.pin)
+        self.OUTPUT = True # by default, all io pins start as outputs
         return
 
     def renderState(self):
@@ -84,39 +107,54 @@ class IOPin:
             return
 
 pins = [
-    outPin(pygame.Rect(0,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(21)),
-    outPin(pygame.Rect(10,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(20)),
-    outPin(pygame.Rect(20,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(26)),
-    outPin(pygame.Rect(30,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(16)),
-    outPin(pygame.Rect(40,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(19)),
-    outPin(pygame.Rect(50,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(13)),
-    outPin(pygame.Rect(60,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(12)),
-    outPin(pygame.Rect(70,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(6)),
-    outPin(pygame.Rect(80,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(5)),
-    outPin(pygame.Rect(90,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(7)),
-    outPin(pygame.Rect(100,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(8)),
-    outPin(pygame.Rect(110,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(11)),
-    outPin(pygame.Rect(120,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(25)),
-    outPin(pygame.Rect(130,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(9)),
-    outPin(pygame.Rect(140,0,10,10), False, "ADDRESS", gpiozero.OutputDevice(10)),
-    outPin(pygame.Rect(150,0,10,10), False, "WE", gpiozero.OutputDevice(14, False, False)),
-    outPin(pygame.Rect(160,0,10,10), False, "OE", gpiozero.OutputDevice(3, False, False)),
-    IOPin(pygame.Rect(170,0,10,10), False, 24),
-    IOPin(pygame.Rect(180,0,10,10), False, 23),
-    IOPin(pygame.Rect(190,0,10,10), False, 22),
-    IOPin(pygame.Rect(200,0,10,10), False, 27),
-    IOPin(pygame.Rect(210,0,10,10), False, 17),
-    IOPin(pygame.Rect(220,0,10,10), False, 18),
-    IOPin(pygame.Rect(230,0,10,10), False, 15),
-    IOPin(pygame.Rect(240,0,10,10), False, 4)
-    ]
+    outPin(pygame.Rect(148,376,40,15), False, "ADDRESS", gpiozero.OutputDevice(21)),
+    outPin(pygame.Rect(148,342,40,15), False, "ADDRESS", gpiozero.OutputDevice(20)),
+    outPin(pygame.Rect(148,306,40,15), False, "ADDRESS", gpiozero.OutputDevice(26)),
+    outPin(pygame.Rect(148,272,40,15), False, "ADDRESS", gpiozero.OutputDevice(16)),
+    outPin(pygame.Rect(148,235,40,15), False, "ADDRESS", gpiozero.OutputDevice(19)),
+    outPin(pygame.Rect(148,201,40,15), False, "ADDRESS", gpiozero.OutputDevice(13)),
+    outPin(pygame.Rect(148,164,40,15), False, "ADDRESS", gpiozero.OutputDevice(12)),
+    outPin(pygame.Rect(148,132,40,15), False, "ADDRESS", gpiozero.OutputDevice(6)),
+    outPin(pygame.Rect(392,165,40,15), False, "ADDRESS", gpiozero.OutputDevice(5)),
+    outPin(pygame.Rect(392,202,40,15), False, "ADDRESS", gpiozero.OutputDevice(7)),
+    outPin(pygame.Rect(392,306,40,15), False, "ADDRESS", gpiozero.OutputDevice(8)),
+    outPin(pygame.Rect(392,238,40,15), False, "ADDRESS", gpiozero.OutputDevice(11)),
+    outPin(pygame.Rect(148,96,40,15), False, "ADDRESS", gpiozero.OutputDevice(25)),
+    outPin(pygame.Rect(392,129,40,15), False, "ADDRESS", gpiozero.OutputDevice(9)),
+    outPin(pygame.Rect(148,59,40,15), False, "ADDRESS", gpiozero.OutputDevice(10)),
+    outPin(pygame.Rect(392,95,40,15), False, "WEB", gpiozero.OutputDevice(14)),
+    outPin(pygame.Rect(392,273,40,15), False, "OEB", gpiozero.OutputDevice(3)),
+    IOPin(pygame.Rect(148,413,40,15), False, 24),
+    IOPin(pygame.Rect(148,448,40,15), False, 23),
+    IOPin(pygame.Rect(148,484,40,15), False, 22),
+    IOPin(pygame.Rect(392,519,40,15), False, 27),
+    IOPin(pygame.Rect(392,485,40,15), False, 17),
+    IOPin(pygame.Rect(392,449,40,15), False, 18),
+    IOPin(pygame.Rect(392,415,40,15), False, 15),
+    IOPin(pygame.Rect(392,379,40,15), False, 4)
+]
+
+IOSwitches = [
+    IOSwitch(pygame.Rect(0,0,10,10), pins[17]),
+    IOSwitch(pygame.Rect(0,10,10,10), pins[18]),
+    IOSwitch(pygame.Rect(0,20,10,10), pins[19]),
+    IOSwitch(pygame.Rect(0,30,10,10), pins[20]),
+    IOSwitch(pygame.Rect(0,40,10,10), pins[21]),
+    IOSwitch(pygame.Rect(0,50,10,10), pins[22]),
+    IOSwitch(pygame.Rect(0,60,10,10), pins[23]),
+    IOSwitch(pygame.Rect(0,70,10,10), pins[24])
+]
 
 # boxes are 40 wide by 15 tall
 # eeprom image
-GREEN = pygame.Surface((40,15)).fill(green)
-RED = pygame.Surface((40,15)).fill(red)
-BLACK = pygame.Surface((40,15)).fill(black)
-BLUE = pygame.Surface((40,15)).fill(blue)
+GREEN = pygame.Surface((40,15))
+GREEN.fill(green)
+RED = pygame.Surface((40,15))
+RED.fill(red)
+BLACK = pygame.Surface((40,15))
+BLACK.fill(black)
+BLUE = pygame.Surface((40,15))
+BLUE.fill(blue)
 EEPROM = pygame.image.load("EEPROM.png")
 EEPROM = pygame.transform.scale(EEPROM, (500, 600))
 EEPROMrect = pygame.Rect(50,0,500,600)
@@ -131,11 +169,11 @@ while True:
         
         if event.type == pygame.MOUSEBUTTONDOWN: 
             point = (event.pos[0], event.pos[1])
-            print(f'click at x: {event.pos[0]}, y: {event.pos[1]}')
+            # print(f'click at x: {event.pos[0]}, y: {event.pos[1]}')
             for pin in pins:
                 if pin.rect.collidepoint(point):
                     pin.onClick()
-    sleep(10)
+    sleep(0.00001)
     # check inputs and render
     for pin in pins:
         if type(pin) == IOPin:
@@ -143,4 +181,3 @@ while True:
         pin.renderState()
 
     pygame.display.flip()
-
