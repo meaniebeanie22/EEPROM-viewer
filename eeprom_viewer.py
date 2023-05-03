@@ -1,7 +1,7 @@
 # need to add:
-# rects coords for each pin box
-# a way to change between an IO being in or out (little I or O next to each IO pin - click on it to change DD)
-# t e s t i n g
+# a way to take a bin file and write it to the chip
+# need a way to make .bin files in the first place
+
 import gpiozero # pi GPIO
 import pygame, sys
 from time import sleep
@@ -32,10 +32,14 @@ class IOSwitch:
     def renderState(self):
         if self.bound.OUTPUT:
             # render an O next to the right pin
-            pass
+            letter = "O"
         else:
             # render an I next to the bound pin
-            pass
+            letter = "I"
+
+        f = pygame.font.SysFont("Verdana", 20)     
+        g = f.render(letter, True, (123,255,0))   
+        screen.blit(g, self.rect) 
         return
 
 class outPin:
@@ -103,8 +107,12 @@ class IOPin:
         if self.OUTPUT:
             return
         else:
-            self.state = bool(self.gpioobject.value())
+            self.state = bool(self.gpioobject.value)
             return
+
+def writeByte(address, byte):
+    pass
+
 
 pins = [
     outPin(pygame.Rect(148,376,40,15), False, "ADDRESS", gpiozero.OutputDevice(21)),
@@ -135,49 +143,68 @@ pins = [
 ]
 
 IOSwitches = [
-    IOSwitch(pygame.Rect(0,0,10,10), pins[17]),
-    IOSwitch(pygame.Rect(0,10,10,10), pins[18]),
-    IOSwitch(pygame.Rect(0,20,10,10), pins[19]),
-    IOSwitch(pygame.Rect(0,30,10,10), pins[20]),
-    IOSwitch(pygame.Rect(0,40,10,10), pins[21]),
-    IOSwitch(pygame.Rect(0,50,10,10), pins[22]),
-    IOSwitch(pygame.Rect(0,60,10,10), pins[23]),
-    IOSwitch(pygame.Rect(0,70,10,10), pins[24])
+    IOSwitch(pygame.Rect(60,413,20,20), pins[17]),
+    IOSwitch(pygame.Rect(60,448,20,20), pins[18]),
+    IOSwitch(pygame.Rect(60,484,20,20), pins[19]),
+    IOSwitch(pygame.Rect(503,519,20,20), pins[20]),
+    IOSwitch(pygame.Rect(503,485,20,20), pins[21]),
+    IOSwitch(pygame.Rect(503,449,20,20), pins[22]),
+    IOSwitch(pygame.Rect(503,415,20,20), pins[23]),
+    IOSwitch(pygame.Rect(503,379,20,20), pins[24])
 ]
 
 # boxes are 40 wide by 15 tall
 # eeprom image
-GREEN = pygame.Surface((40,15))
-GREEN.fill(green)
-RED = pygame.Surface((40,15))
-RED.fill(red)
-BLACK = pygame.Surface((40,15))
-BLACK.fill(black)
-BLUE = pygame.Surface((40,15))
-BLUE.fill(blue)
-EEPROM = pygame.image.load("EEPROM.png")
-EEPROM = pygame.transform.scale(EEPROM, (500, 600))
-EEPROMrect = pygame.Rect(50,0,500,600)
 
+inp = input("Filename to write to chip (if dont want to just leave blank)")
+file = False
+if inp:
+    file = True
+    f = list(open(inp, 'rb').read())
+    WE = pins[15]
+    OE = pins[16]
+    ADDRESS = [pins[x] for x in range(15)]
+    print(f)
+    
 
-while True:
-    screen.fill(black)
-    screen.blit(EEPROM, EEPROMrect)
-    # go through the event queue and deal with clicks
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT: sys.exit()
+else:
+    GREEN = pygame.Surface((40,15))
+    GREEN.fill(green)
+    RED = pygame.Surface((40,15))
+    RED.fill(red)
+    BLACK = pygame.Surface((40,15))
+    BLACK.fill(black)
+    BLUE = pygame.Surface((40,15))
+    BLUE.fill(blue)
+    EEPROM = pygame.image.load("EEPROM.png")
+    EEPROM = pygame.transform.scale(EEPROM, (500, 600))
+    EEPROMrect = pygame.Rect(50,0,500,600)
+    while True:
+        screen.fill(black)
+        screen.blit(EEPROM, EEPROMrect)
+        # go through the event queue and deal with clicks
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT: sys.exit()
+            
+            if event.type == pygame.MOUSEBUTTONDOWN: 
+                point = (event.pos[0], event.pos[1])
+                print(f'click at x: {event.pos[0]}, y: {event.pos[1]}')
+                for pin in pins:
+                    if pin.rect.collidepoint(point):
+                        pin.onClick()
+                
+                for switch in IOSwitches:
+                    if switch.rect.collidepoint(point):
+                        switch.onClick()
+
+        sleep(0.00001)
+        # check inputs and render
+        for pin in pins:
+            if type(pin) == IOPin:
+                pin.setInputState()
+            pin.renderState()
         
-        if event.type == pygame.MOUSEBUTTONDOWN: 
-            point = (event.pos[0], event.pos[1])
-            # print(f'click at x: {event.pos[0]}, y: {event.pos[1]}')
-            for pin in pins:
-                if pin.rect.collidepoint(point):
-                    pin.onClick()
-    sleep(0.00001)
-    # check inputs and render
-    for pin in pins:
-        if type(pin) == IOPin:
-            pin.setInputState()
-        pin.renderState()
+        for switch in IOSwitches:
+            switch.renderState()
 
-    pygame.display.flip()
+        pygame.display.flip()
