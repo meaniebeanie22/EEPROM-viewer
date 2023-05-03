@@ -196,6 +196,11 @@ else:
                 for switch in IOSwitches:
                     if switch.rect.collidepoint(point):
                         switch.onClick()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_d:
+                    for switch in IOSwitches:
+                        switch.onClick()
+        
 
         sleep(0.00001)
         # check inputs and render
