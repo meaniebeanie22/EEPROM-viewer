@@ -18,3 +18,8 @@ rom[0x7ffd] = 0x80
 
 with open("rom.bin", "wb") as out_file:
   out_file.write(rom)
+
+with open("rom.bin", 'rb') as file:
+  f = file.read()
+  for i in range(128):
+    print(f[i])

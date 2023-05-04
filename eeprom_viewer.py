@@ -160,12 +160,36 @@ inp = input("Filename to write to chip (if dont want to just leave blank)")
 file = False
 if inp:
     file = True
-    f = list(open(inp, 'rb').read())
-    WE = pins[15]
-    OE = pins[16]
-    ADDRESS = [pins[x] for x in range(15)]
-    print(f)
-    
+    with open("rom.bin", 'rb') as file:
+        f = file.read()
+        WE = pins[15]
+        OE = pins[16]
+        ADDRESS = [pins[x] for x in range(15)]
+        OUTPUT = [pins[x] for x in range(17,25)]
+        
+        WE.on()
+        OE.on()
+
+        for address, byte in enumerate(inp):
+            bitmask = 1
+            for i in range(15):
+                ADDRESS[i].value = (address & bitmask)
+                bitmask << 1
+
+            bitmask = 1
+            for i in range(8):
+                OUTPUT[i].value = (byte & bitmask)
+                bitmask << 1
+            
+            sleep(0.00001)
+            WE.off()
+            sleep(0.00001)
+            WE.on()
+            sleep(0.00001)
+
+                
+
+
 
 else:
     GREEN = pygame.Surface((40,15))
