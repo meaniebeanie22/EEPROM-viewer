@@ -110,10 +110,6 @@ class IOPin:
             self.state = bool(self.gpioobject.value)
             return
 
-def writeByte(address, byte):
-    pass
-
-
 pins = [
     outPin(pygame.Rect(148,376,40,15), False, "ADDRESS", gpiozero.OutputDevice(21)),
     outPin(pygame.Rect(148,342,40,15), False, "ADDRESS", gpiozero.OutputDevice(20)),
