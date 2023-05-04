@@ -163,24 +163,24 @@ if inp:
         ADDRESS = [pins[x] for x in range(15)]
         OUTPUT = [pins[x] for x in range(17,25)]
         
-        WE.on()
-        OE.on()
+        WE.gpioobject.on()
+        OE.gpioobject.on()
 
         for address, byte in enumerate(inp):
             bitmask = 1
             for i in range(15):
-                ADDRESS[i].value = (address & bitmask)
+                ADDRESS[i].gpioobject.value = (address & bitmask)
                 bitmask << 1
 
             bitmask = 1
             for i in range(8):
-                OUTPUT[i].value = (byte & bitmask)
+                OUTPUT[i].gpioobject.value = (byte & bitmask)
                 bitmask << 1
             
             sleep(0.00001)
-            WE.off()
+            WE.gpioobject.off()
             sleep(0.00001)
-            WE.on()
+            WE.gpioobject.on()
             sleep(0.00001)
 
                 
