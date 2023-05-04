@@ -10,7 +10,7 @@ code = bytearray([
 
   0x4c, 0x05, 0x80,   # jmp $8005
   ])
-
+code = bytearray()
 rom = code + bytearray([0xea] * (32768 - len(code)))
 
 rom[0x7ffc] = 0x00
