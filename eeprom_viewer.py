@@ -159,6 +159,7 @@ IOSwitches = [
 inp = input("Filename to write to chip (if dont want to just leave blank)")
 file = False
 if inp:
+    pygame.quit()
     file = True
     with open("rom.bin", 'rb') as file:
         f = file.read()
